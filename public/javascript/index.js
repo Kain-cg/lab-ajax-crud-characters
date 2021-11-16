@@ -50,9 +50,49 @@ window.addEventListener('load', () => {
 
   document.getElementById('edit-character-form').addEventListener('submit', function (event) {
 
+    event.preventDefault();
+
+    const editCharacterForm = document.querySelector("#edit-character-form") 
+
+    const editFormInputs = document.querySelectorAll("#edit-character-form input")
+
+    const id = document.getElementsByName('chr-id')[0].value;
+
+    const name = editFormInputs[1].value
+    const occupation = editFormInputs[2].value
+    const weapon = editFormInputs[3].value
+    const cartoon = editFormInputs[4].checked
+
+    const info = { name, occupation, weapon, cartoon }
+
+    charactersAPI.updateOneRegister(id, info)
+        .then(res => {
+            editCharacterForm.reset()
+            charactersAPI.getFullList()
+        })
+        .catch(err => console.log(err))
+
   });
 
   document.getElementById('new-character-form').addEventListener('submit', function (event) {
+
+    event.preventDefault();
+
+    const newCharacterForm = document.querySelector("#new-character-form")
+
+    const inputs = document.querySelectorAll("#new-character-form input")
+  
+      const name = inputs[0].value
+      const occupation = inputs[1].value
+      const weapon = inputs[2].value
+      const cartoon = inputs[3].checked
+  
+      charactersAPI.createOneRegister({ name, occupation, weapon, cartoon })
+          .then(res => {
+              newCharacterForm.reset()
+              charactersAPI.getFullList()
+          })
+          .catch(err => console.log(err))
 
   });
 });
